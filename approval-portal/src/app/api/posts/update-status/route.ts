@@ -4,9 +4,10 @@ import { updatePostStatus } from "@/lib/airtable";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { postId, status, comment } = body;
+    const { id, postId, status, comment } = body;
+    const recordId = id || postId;
 
-    if (!postId) {
+    if (!recordId) {
       return NextResponse.json(
         { error: "Post ID is required" },
         { status: 400 }
@@ -21,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate status values
-    const validStatuses = ["Approved", "Revision Requested", "Draft", "Ready for Review"];
+    const validStatuses = ["Approved", "Needs Revision", "Revision Requested", "Draft", "Ready for Review", "Review"];
     if (!validStatuses.includes(status)) {
       return NextResponse.json(
         { error: `Invalid status. Must be one of: ${validStatuses.join(", ")}` },
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await updatePostStatus(postId, status, comment);
+    await updatePostStatus(recordId, status, comment);
 
     return NextResponse.json({
       success: true,
