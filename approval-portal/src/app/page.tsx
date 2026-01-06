@@ -209,92 +209,62 @@ export default function Home() {
           {selectedPost ? (
             <>
               <div className="content-scroll">
-                <div className="content-card">
-                  <div className="content-header">
-                    <h1>{selectedPost.title}</h1>
-                    <div className="meta">
-                      <span>
-                        {getPlatformIcon(selectedPost.platforms?.[0] || "")}{" "}
-                        {selectedPost.platforms?.join(", ") || "No platform"}
-                      </span>
-                      <span>📅 {formatDate(selectedPost.scheduledFor)}</span>
-                      <span>📋 {selectedPost.postFormat?.[0] || "Post"}</span>
+                {/* Post info bar */}
+                <div className="post-info-bar">
+                  <span className="platform-label">
+                    {getPlatformIcon(selectedPost.platforms?.[0] || "")}{" "}
+                    {selectedPost.platforms?.[0] || "Unknown"}
+                  </span>
+                  <span className="schedule-label">
+                    📅 {formatDate(selectedPost.scheduledFor)}
+                  </span>
+                </div>
+
+                {/* Phone mockup */}
+                <div className="phone-mockup">
+                  <div className="phone-frame">
+                    <div className="phone-notch"></div>
+                    <div className="phone-screen">
+                      {/* App header */}
+                      <div className="app-header-mock">
+                        <div className="profile-pic"></div>
+                        <span className="username">datacolor</span>
+                        <span className="more-dots">•••</span>
+                      </div>
+
+                      {/* Post image */}
+                      <div className="post-image-container">
+                        {selectedPost.images && selectedPost.images.length > 0 ? (
+                          <Image
+                            src={selectedPost.images[0].thumbnails?.large?.url || selectedPost.images[0].url}
+                            alt="Post image"
+                            fill
+                            style={{ objectFit: "cover" }}
+                          />
+                        ) : (
+                          <div className="no-image-mock">
+                            <span>📷</span>
+                            <p>No image yet</p>
+                          </div>
+                        )}
+                        {selectedPost.images && selectedPost.images.length > 1 && (
+                          <div className="image-count">{selectedPost.images.length} images</div>
+                        )}
+                      </div>
+
+                      {/* Action icons */}
+                      <div className="post-actions-mock">
+                        <span>♡</span>
+                        <span>💬</span>
+                        <span>➤</span>
+                      </div>
+
+                      {/* Caption */}
+                      <div className="post-caption-mock">
+                        <span className="username">datacolor</span>{" "}
+                        {getContentForPlatform(selectedPost) || "No caption yet"}
+                      </div>
                     </div>
-                  </div>
-                  <div className="content-body">
-                    {/* Images */}
-                    {selectedPost.images && selectedPost.images.length > 0 && (
-                      <div className="content-section">
-                        <h3>Images</h3>
-                        <div className="image-grid">
-                          {selectedPost.images.map((img, idx) => (
-                            <Image
-                              key={img.id || idx}
-                              src={img.thumbnails?.large?.url || img.url}
-                              alt={`Image ${idx + 1}`}
-                              width={300}
-                              height={300}
-                              style={{ objectFit: "cover" }}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Content */}
-                    {getContentForPlatform(selectedPost) && (
-                      <div className="content-section">
-                        <h3>Caption</h3>
-                        <div className="text-content">
-                          {getContentForPlatform(selectedPost)}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Slides (for carousels) */}
-                    {selectedPost.slides && selectedPost.slides.length > 0 && (
-                      <div className="content-section">
-                        <h3>Slides</h3>
-                        <div className="slides-container">
-                          {selectedPost.slides.map((slide, idx) => (
-                            <div key={idx} className="slide-item">
-                              <div className="slide-number">Slide {idx + 1}</div>
-                              <div className="slide-content">{slide}</div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Hashtags */}
-                    {selectedPost.hashtags && (
-                      <div className="content-section">
-                        <h3>Hashtags</h3>
-                        <div className="hashtags">
-                          {selectedPost.hashtags.split(/\s+/).map((tag, idx) => (
-                            <span key={idx} className="hashtag">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Image Ideas */}
-                    {selectedPost.imageIdeas && (
-                      <div className="content-section">
-                        <h3>Image Ideas</h3>
-                        <div className="text-content">{selectedPost.imageIdeas}</div>
-                      </div>
-                    )}
-
-                    {/* Image Prompts */}
-                    {selectedPost.imagePrompts && (
-                      <div className="content-section">
-                        <h3>Image Prompts</h3>
-                        <div className="text-content">{selectedPost.imagePrompts}</div>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
